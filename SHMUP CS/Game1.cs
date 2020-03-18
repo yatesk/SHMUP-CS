@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace SHMUP_CS
 {
@@ -12,10 +13,20 @@ namespace SHMUP_CS
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static int screenWidth = 1200;
+        public static int screenHeight = 850;
+
+        private State state;
+        private State nextState;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
+            this.Window.Title = "SHMUP";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -37,10 +48,11 @@ namespace SHMUP_CS
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            state = new MenuState(this, Content);
+
+            nextState = null;
         }
 
         /// <summary>
@@ -59,10 +71,15 @@ namespace SHMUP_CS
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (nextState != null)
+            {
+                state = nextState;
+                state.LoadContent();
 
-            // TODO: Add your update logic here
+                nextState = null;
+            }
+
+            state.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -73,11 +90,18 @@ namespace SHMUP_CS
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MediumSeaGreen);
+            spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            state.Draw(gameTime, spriteBatch);
 
+            spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        public void ChangeState(State state)
+        {
+            nextState = state;
         }
     }
 }
