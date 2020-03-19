@@ -17,7 +17,6 @@ namespace SHMUP_CS
         {
             mouseInput = new MouseInput(Mouse.GetState());
 
-
             level = new Level(content);
 
             LoadContent();
@@ -29,6 +28,16 @@ namespace SHMUP_CS
 
         public override void Update(GameTime gameTime)
         {
+            mouseInput.Update(Mouse.GetState());
+
+            level.spaceship.Update(gameTime, mouseInput);
+
+            if (mouseInput.LeftClick())
+            {
+                double angle = Math.Atan2(mouseInput.getMouseY() - level.spaceship.position.Y, mouseInput.getMouseX() - level.spaceship.position.X);
+
+                level.spaceship.projectiles.Add(new Projectile(content, level.spaceship.position, angle));
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

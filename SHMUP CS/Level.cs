@@ -17,14 +17,13 @@ namespace SHMUP_CS
         public Level(ContentManager _content)
         {
             content = _content;
-            spaceship = new Spaceship(0, 0, _content);
+            spaceship = new Spaceship(200, 200, _content);
 
             LoadContent();
         }
 
         public void Update(GameTime gameTime)
         {
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
