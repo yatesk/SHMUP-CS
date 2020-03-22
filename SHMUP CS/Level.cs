@@ -12,6 +12,8 @@ namespace SHMUP_CS
         public Spaceship spaceship;
         ContentManager content;
 
+        public List<Enemy> enemies;
+
         private Texture2D backgroundImage;
 
         public Level(ContentManager _content)
@@ -19,11 +21,22 @@ namespace SHMUP_CS
             content = _content;
             spaceship = new Spaceship(200, 200, _content);
 
+            enemies = new List<Enemy>();
+
+            enemies.Add(new Enemy(50, -5f, content, "spaceship1"));
+
             LoadContent();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, MouseInput mouseInput)
         {
+            spaceship.Update(gameTime, mouseInput);
+
+            foreach (var enemy in enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -31,6 +44,11 @@ namespace SHMUP_CS
             spriteBatch.Draw(backgroundImage, new Vector2(0, 0));
 
             spaceship.Draw(spriteBatch);
+
+            foreach (var enemy in enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
         }
 
         public void LoadContent()

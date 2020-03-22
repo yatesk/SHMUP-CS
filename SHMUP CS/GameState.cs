@@ -30,7 +30,9 @@ namespace SHMUP_CS
         {
             mouseInput.Update(Mouse.GetState());
 
-            level.spaceship.Update(gameTime, mouseInput);
+            level.Update(gameTime, mouseInput);
+                
+                //spaceship.Update(gameTime, mouseInput);
 
             if (mouseInput.LeftClick())
             {

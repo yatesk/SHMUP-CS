@@ -26,7 +26,7 @@ namespace SHMUP_CS
             projectiles = new List<Projectile>();
 
             position = new Vector2(x, y);
-            velocity = 3.0f;
+            velocity = 5.0f;
             rotation = 0;
 
             image = this.content.Load<Texture2D>("spaceship1");
@@ -47,15 +47,15 @@ namespace SHMUP_CS
         {
             Vector2 distanceBetween = new Vector2(mouseInput.getMouseX() - position.X, mouseInput.getMouseY() - position.Y);
 
-            // refactor so there are no 180 degree turns
-            if (Math.Abs(distanceBetween.Y) > 33 || Math.Abs(distanceBetween.X) > 65)
+            // refactor so spaceship moves more smoothly
+            if (Math.Abs(distanceBetween.Y) > 32 || Math.Abs(distanceBetween.X) > 16)
             {
                 rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X);
+
+                Vector2 direction = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+
+                position += direction * velocity;
             }
-
-            Vector2 direction = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
-
-            position += direction * velocity;
 
             foreach (var projectile in projectiles)
             {
