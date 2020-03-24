@@ -16,6 +16,10 @@ namespace SHMUP_CS
 
         private Texture2D backgroundImage;
 
+        Random rnd = new Random();
+
+        int enemyCount = 5;
+
         public Level(ContentManager _content)
         {
             content = _content;
@@ -37,6 +41,26 @@ namespace SHMUP_CS
                 enemy.Update(gameTime);
             }
 
+            // remove enemies that go off screen
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i].position.X < -100 || enemies[i].position.X > Game1.screenWidth + 100 || enemies[i].position.Y < -100 || enemies[i].position.Y > Game1.screenHeight + 100)
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
+
+            while (enemies.Count <= enemyCount)
+            {
+                int y = rnd.Next(50, Game1.screenHeight - 50);
+                int velocity = rnd.Next(1, 6);
+
+                // if random number is 0 then go right to left
+                if (rnd.Next(0, 2) == 0)
+                    velocity *= -1;
+
+                enemies.Add(new Enemy(y, velocity, content, "spaceship1"));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

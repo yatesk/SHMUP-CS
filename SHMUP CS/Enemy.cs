@@ -36,9 +36,7 @@ namespace SHMUP_CS
             velocity = _velocity;
 
             image = this.content.Load<Texture2D>(shipType);
-
         }
-
 
         public void Draw(SpriteBatch spriteBatch)
         {

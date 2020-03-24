@@ -62,9 +62,5 @@ namespace SHMUP_CS
                 projectile.Update();
             }
         }
-
-        public void FireProjectile()
-        {
-        }
     }
 }
