@@ -27,8 +27,6 @@ namespace SHMUP_CS
 
             enemies = new List<Enemy>();
 
-            enemies.Add(new Enemy(50, -5f, content, "spaceship1"));
-
             LoadContent();
         }
 
@@ -50,17 +48,25 @@ namespace SHMUP_CS
                 }
             }
 
+            // check projectile / enemy collisions
+            CheckProjectileCollisions();
+
             while (enemies.Count <= enemyCount)
             {
-                int y = rnd.Next(50, Game1.screenHeight - 50);
-                int velocity = rnd.Next(1, 6);
-
-                // if random number is 0 then go right to left
-                if (rnd.Next(0, 2) == 0)
-                    velocity *= -1;
-
-                enemies.Add(new Enemy(y, velocity, content, "spaceship1"));
+                NewEnemy();
             }
+        }
+
+        public void NewEnemy()
+        {
+            int y = rnd.Next(50, Game1.screenHeight - 50);
+            int velocity = rnd.Next(1, 4);
+
+            // if random number is 0 then go right to left
+            if (rnd.Next(0, 2) == 0)
+                velocity *= -1;
+
+            enemies.Add(new Enemy(y, velocity, content, "spaceship1"));
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -78,6 +84,26 @@ namespace SHMUP_CS
         public void LoadContent()
         {
             backgroundImage = content.Load<Texture2D>("background");
+        }
+
+        public bool CheckProjectileCollisions()
+        {
+            for (int i = spaceship.projectiles.Count - 1; i >= 0; i--)
+            {
+                Rectangle projectileBoundingBox = new Rectangle((int)spaceship.projectiles[i].position.X, (int)spaceship.projectiles[i].position.Y, spaceship.projectiles[i].width, spaceship.projectiles[i].height);
+
+                for (int j = enemies.Count - 1; j >= 0; j--)
+                {
+                    Rectangle emenyBoundingBox = new Rectangle((int)enemies[j].position.X, (int)enemies[j].position.Y, enemies[j].width, enemies[j].height);
+
+                    if (emenyBoundingBox.Intersects(projectileBoundingBox))
+                    {
+                        enemies.RemoveAt(j);
+                        spaceship.projectiles.RemoveAt(i);
+                    }
+                }
+            }
+            return false;
         }
     }
 }

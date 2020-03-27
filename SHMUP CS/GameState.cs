@@ -36,9 +36,14 @@ namespace SHMUP_CS
 
             if (mouseInput.LeftClick())
             {
-                double angle = Math.Atan2(mouseInput.getMouseY() - level.spaceship.position.Y, mouseInput.getMouseX() - level.spaceship.position.X);
+                level.spaceship.ShootWeapon(mouseInput.getMouseX(), mouseInput.getMouseY());
+                //double angle = Math.Atan2(mouseInput.getMouseY() - level.spaceship.position.Y, mouseInput.getMouseX() - level.spaceship.position.X);
 
-                level.spaceship.projectiles.Add(new Projectile(content, level.spaceship.position, angle));
+                //level.spaceship.projectiles.Add(new Projectile(content, level.spaceship.position, angle));
+            }
+            else if (mouseInput.MiddleClick())
+            {
+                level.spaceship.SwitchWeapon();
             }
         }
 

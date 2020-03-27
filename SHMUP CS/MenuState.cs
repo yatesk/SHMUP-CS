@@ -79,7 +79,7 @@ namespace SHMUP_CS
         {
             float x = Game1.screenWidth / 2 - (buttonFont.MeasureString(gameName).X / 2);
 
-            spriteBatch.DrawString(buttonFont, gameName, new Vector2(x, 100), Color.Black);
+            spriteBatch.DrawString(buttonFont, gameName, new Vector2(x, 100), Color.White);
 
             foreach (var button in buttons)
             {
